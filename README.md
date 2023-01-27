@@ -10,6 +10,10 @@ Q: What's the disease / phenotype associated with gene of my interest?
 
 ### Motivation
 
+[Open Targets](https://platform.opentargets.org/) is the largest public-private partnership to curate information about genetic diseases, clinical trials and molecular entities (e.g., drugs) to accelerate drug discovery research. While the web interface provides a user-friendly web interface for making simple queries, it does not provide a convenient search engine to support more sophisticated queries.
+
+Fortunately, Open Targets team provides a graphQL API to access and query relevant data from a number of useful endpoints. However, most biologists are not comfortable to write their own graphQL queries or access these data via API. Can we leverage GPT-based search engines to translate natural language to valid graphQL queries to navigate the richest drug discovery dataset?
+
 ### Inspiration
 
 I really liked [BirdSQL](https://twitter.com/perplexity_ai/status/1603441221753372673) - Perplexity AI's GPT-based search engine using OpenAI Codex to translate natural language to SQL queries to navigate Twitter. Make sure to check it out yourself [here](https://www.perplexity.ai/sql). Great choice to showcase the capabilities of their search engine and very impressive implementation overall!
