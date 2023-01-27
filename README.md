@@ -4,6 +4,10 @@ This is the code repo for my submission at [Scale AI Generative AI & LLM hackath
 
 ### Demo
 
+Q: What's the disease / phenotype associated with gene of my interest?
+
+![Asking Open Targets questions about gene-phenotype associations.](demo.svg)
+
 ### Motivation
 
 ### Inspiration
@@ -13,5 +17,6 @@ This is the code repo for my submission at [Scale AI Generative AI & LLM hackath
 ### TODO
 
 - [ ] Hook up a Slack chatbot for more user-friendly interaction
+- [ ] Expand prompt capabilities to answer other frequently asked questions
 - [ ] Slick web interface similar to BirdSQL?
 - [ ] Implement using langchain?
