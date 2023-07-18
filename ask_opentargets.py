@@ -22,7 +22,7 @@ prime_prompt = "query top_n_associated_diseases {\n  search(queryString:"
 user_input = input("How can I help you today?\n")
 
 response = openai.Completion.create(
-    model="code-davinci-002",
+    model="text-davinci-003",
     prompt=prompt_template + "### " + user_input + "\n" + prime_prompt,
     temperature=0,
     max_tokens=250,
