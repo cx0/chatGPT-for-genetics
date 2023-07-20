@@ -1,0 +1,1490 @@
+type APIVersion {
+  x: String!
+  y: String!
+  z: String!
+}
+
+# Significant adverse event entries
+type AdverseEvent {
+  # Meddra term on adverse event
+  name: String!
+
+  # 8 digit unique meddra identification number
+  meddraCode: String
+
+  # Number of reports mentioning drug and adverse event
+  count: Long!
+
+  # Log-likelihood ratio
+  logLR: Float!
+}
+
+# Significant adverse events inferred from FAERS reports
+type AdverseEvents {
+  # Total significant adverse events
+  count: Long!
+
+  # LLR critical value to define significance
+  criticalValue: Float!
+
+  # Significant adverse event entries
+  rows: [AdverseEvent!]!
+}
+
+type Aggregation {
+  key: String!
+  uniques: Long!
+  aggs: [Aggregation!]
+}
+
+input AggregationFilter {
+  name: String!
+  path: [String!]!
+}
+
+type Aggregations {
+  uniques: Long!
+  aggs: [NamedAggregation!]!
+}
+
+# Associated Disease Entity
+type AssociatedDisease {
+  score: Float!
+  datatypeScores: [ScoredComponent!]!
+  datasourceScores: [ScoredComponent!]!
+
+  # Disease
+  disease: Disease!
+}
+
+type AssociatedDiseases {
+  datasources: [DatasourceSettings!]!
+  aggregations: Aggregations
+  count: Long!
+
+  # Associated Targets using (On the fly method)
+  rows: [AssociatedDisease!]!
+}
+
+# Associated Target Entity
+type AssociatedTarget {
+  score: Float!
+  datatypeScores: [ScoredComponent!]!
+  datasourceScores: [ScoredComponent!]!
+
+  # Target
+  target: Target!
+}
+
+type AssociatedTargets {
+  datasources: [DatasourceSettings!]!
+  aggregations: Aggregations
+  count: Long!
+
+  # Associated Targets using (On the fly method)
+  rows: [AssociatedTarget!]!
+}
+
+type BiologicalModels {
+  allelicComposition: String!
+  geneticBackground: String!
+  id: String
+  literature: [String!]
+}
+
+type CancerHallmark {
+  description: String!
+  impact: String
+  label: String!
+  pmid: Long!
+}
+
+type CellType {
+  reliability: Boolean!
+  name: String!
+  level: Int!
+}
+
+type ChemicalProbe {
+  id: String!
+  control: String
+  drugId: String
+  mechanismOfAction: [String!]
+  isHighQuality: Boolean!
+  origin: [String!]
+  probeMinerScore: Float
+  probesDrugsScore: Float
+  scoreInCells: Float
+  scoreInOrganisms: Float
+  targetFromSourceId: String!
+  urls: [ChemicalProbeUrl!]!
+}
+
+type ChemicalProbeUrl {
+  niceName: String!
+  url: String
+}
+
+type Constraint {
+  constraintType: String!
+  exp: Float
+  obs: Long
+  oe: Float
+  oeLower: Float
+  oeUpper: Float
+  score: Float
+  upperBin: Long
+  upperBin6: Long
+  upperRank: Long
+}
+
+type DataVersion {
+  year: String!
+  month: String!
+  iteration: String!
+}
+
+type DatasourceSettings {
+  id: String!
+  weight: Float!
+  propagate: Boolean!
+}
+
+input DatasourceSettingsInput {
+  id: String!
+  weight: Float!
+  propagate: Boolean!
+}
+
+type DepMapEssentiality {
+  screens: [GeneEssentialityScreen!]!
+  tissueId: String
+  tissueName: String
+}
+
+# Disease or phenotype entity
+type Disease {
+  # Open Targets disease id
+  id: String!
+
+  # Disease name
+  name: String!
+
+  # Disease description
+  description: String
+
+  # List of external cross reference IDs
+  dbXRefs: [String!]
+
+  # List of direct location Disease terms
+  directLocationIds: [String!]
+
+  # List of indirect location Disease terms
+  indirectLocationIds: [String!]
+
+  # List of obsolete diseases
+  obsoleteTerms: [String!]
+
+  # Disease synonyms
+  synonyms: [DiseaseSynonyms!]
+  ancestors: [String!]!
+  descendants: [String!]!
+
+  # Ancestor therapeutic area disease entities in ontology
+  therapeuticAreas: [Disease!]!
+
+  # Disease parents entities in ontology
+  parents: [Disease!]!
+
+  # Disease children entities in ontology
+  children: [Disease!]!
+
+  # Direct Location disease terms
+  directLocations: [Disease!]!
+
+  # Indirect Location disease terms
+  indirectLocations: [Disease!]!
+
+  # Return similar labels using a model Word2CVec trained with PubMed
+  similarEntities(
+    # List of IDs either EFO ENSEMBL CHEMBL
+    additionalIds: [String!]
+
+    # List of entity names to search for (target, disease, drug,...)
+    entityNames: [String!]
+
+    # Threshold similarity between 0 and 1
+    threshold: Float
+    size: Int
+  ): [Similarity!]!
+
+  # Return the list of publications that mention the main entity, alone or in combination with other entities
+  literatureOcurrences(
+    # List of IDs either EFO ENSEMBL CHEMBL
+    additionalIds: [String!]
+
+    # Year at the lower end of the filter
+    startYear: Int
+
+    # Month at the lower end of the filter
+    startMonth: Int
+
+    # Year at the higher end of the filter
+    endYear: Int
+
+    # Month at the higher end of the filter
+    endMonth: Int
+    cursor: String
+  ): Publications!
+
+  # Is disease a therapeutic area itself
+  isTherapeuticArea: Boolean!
+
+  # Phenotype from HPO index
+  phenotypes(page: Pagination): DiseaseHPOs
+
+  # The complete list of all possible datasources
+  evidences(
+    # List of Ensembl IDs
+    ensemblIds: [String!]!
+
+    # Use disease ontology to capture evidences from all descendants to build associations
+    enableIndirect: Boolean
+
+    # List of datasource ids
+    datasourceIds: [String!]
+    size: Int
+    cursor: String
+  ): Evidences!
+
+  # RNA and Protein baseline expression
+  otarProjects: [OtarProject!]!
+
+  # Clinical precedence for investigational or approved drugs indicated for disease and curated mechanism of action
+  knownDrugs(
+    # Query string
+    freeTextQuery: String
+    size: Int
+    cursor: String
+  ): KnownDrugs
+
+  # associations on the fly
+  associatedTargets(
+    Bs: [String!]
+
+    # Use disease ontology to capture evidences from all descendants to build associations
+    enableIndirect: Boolean
+    datasources: [DatasourceSettingsInput!]
+    aggregationFilters: [AggregationFilter!]
+    BFilter: String
+    orderByScore: String
+    page: Pagination
+  ): AssociatedTargets!
+}
+
+type DiseaseCellLine {
+  id: String
+  name: String
+  tissue: String
+  tissueId: String
+}
+
+# Disease and phenotypes annotations
+type DiseaseHPO {
+  # List of phenotype annotations.
+  evidence: [DiseaseHPOEvidences!]!
+
+  # Phenotype entity
+  phenotypeHPO: HPO
+
+  # Disease Entity
+  phenotypeEFO: Disease
+}
+
+# the HPO project provides a large set of phenotype annotations. Source: Phenotype.hpoa
+type DiseaseHPOEvidences {
+  # One of P (Phenotypic abnormality), I (inheritance), C (onset and clinical course). Might be null (MONDO)
+  aspect: String
+
+  # This refers to the center or user making the annotation and the date on which the annotation was made
+  bioCuration: String
+
+  # This field refers to the database and database identifier. EG. OMIM
+  diseaseFromSourceId: String!
+
+  # Related name from the field diseaseFromSourceId
+  diseaseFromSource: String!
+
+  # This field indicates the level of evidence supporting the annotation.
+  evidenceType: String
+
+  # A term-id from the HPO-sub-ontology
+  frequency: String
+
+  # This optional field can be used to qualify the annotation. Values: [True or False]
+  qualifierNot: Boolean!
+
+  # This field indicates the source of the information used for the annotation (phenotype.hpoa)
+  references: [String!]!
+
+  # This field contains the strings MALE or FEMALE if the annotation in question is limited to males or females.
+  sex: String
+
+  # Possible source mapping: HPO or MONDO
+  resource: String!
+
+  # HP terms from the Clinical modifier subontology
+  modifiers: [HPO!]!
+
+  # A term-id from the HPO-sub-ontology below the term Age of onset.
+  onset: [HPO!]!
+
+  # HPO Entity
+  frequencyHPO: HPO
+}
+
+# List of Phenotypes associated with the disease
+type DiseaseHPOs {
+  # Number of entries
+  count: Long!
+
+  # List of Disease and phenotypes annotations
+  rows: [DiseaseHPO!]!
+}
+
+type DiseaseSynonyms {
+  relation: String!
+  terms: [String!]!
+}
+
+# Drug/Molecule entity
+type Drug {
+  # Open Targets molecule id
+  id: String!
+
+  # Molecule preferred name
+  name: String!
+
+  # Molecule synonyms
+  synonyms: [String!]!
+
+  # Drug trade names
+  tradeNames: [String!]!
+
+  # Year drug was approved for the first time
+  yearOfFirstApproval: Int
+
+  # Drug modality
+  drugType: String!
+
+  # Alias for maximumClinicalTrialPhase == 4
+  isApproved: Boolean
+  crossReferences: [DrugReferences!]
+
+  # Maximum phase observed in clinical trial records and post-marketing package inserts
+  maximumClinicalTrialPhase: Float
+
+  # Has drug been withdrawn from the market
+  hasBeenWithdrawn: Boolean!
+
+  # Alert on life-threteaning drug side effects provided by FDA
+  blackBoxWarning: Boolean!
+
+  # Drug description
+  description: String
+
+  # ChEMBL ID of parent molecule
+  parentMolecule: Drug
+
+  # Chembl IDs of molecules that descend from current molecule.
+  childMolecules: [Drug!]!
+
+  # Indications for which there is a phase IV clinical trial
+  approvedIndications: [String!]
+
+  # Warnings present on drug as identified by ChEMBL.
+  drugWarnings: [DrugWarning!]!
+
+  # Return similar labels using a model Word2CVec trained with PubMed
+  similarEntities(
+    # List of IDs either EFO ENSEMBL CHEMBL
+    additionalIds: [String!]
+
+    # List of entity names to search for (target, disease, drug,...)
+    entityNames: [String!]
+
+    # Threshold similarity between 0 and 1
+    threshold: Float
+    size: Int
+  ): [Similarity!]!
+
+  # Return the list of publications that mention the main entity, alone or in combination with other entities
+  literatureOcurrences(
+    # List of IDs either EFO ENSEMBL CHEMBL
+    additionalIds: [String!]
+
+    # Year at the lower end of the filter
+    startYear: Int
+
+    # Month at the lower end of the filter
+    startMonth: Int
+
+    # Year at the higher end of the filter
+    endYear: Int
+
+    # Month at the higher end of the filter
+    endMonth: Int
+    cursor: String
+  ): Publications!
+
+  # Mechanisms of action to produce intended pharmacological effects. Curated from scientific literature and post-marketing package inserts
+  mechanismsOfAction: MechanismsOfAction
+
+  # Investigational and approved indications curated from clinical trial records and post-marketing package inserts
+  indications: Indications
+
+  # Curated Clinical trial records and and post-marketing package inserts with a known mechanism of action
+  knownDrugs(
+    # Query string
+    freeTextQuery: String
+    size: Int
+    cursor: String
+  ): KnownDrugs
+
+  # Significant adverse events inferred from FAERS reports
+  adverseEvents(page: Pagination): AdverseEvents
+
+  # Therapeutic indications for drug based on clinical trial data or post-marketed drugs, when mechanism of action is known"
+  linkedDiseases: LinkedDiseases
+
+  # Molecule targets based on drug mechanism of action
+  linkedTargets: LinkedTargets
+}
+
+type DrugReferences {
+  source: String!
+  reference: [String!]!
+}
+
+# Drug warnings as calculated by ChEMBL
+type DrugWarning {
+  # High level toxicity category by Meddra System Organ Class
+  toxicityClass: String
+  chemblIds: [String!]
+
+  # Country issuing warning
+  country: String
+
+  # Reason for withdrawal
+  description: String
+  id: Long
+
+  # Source of withdrawal information
+  references: [DrugWarningReference!]
+
+  # Either 'black box warning' or 'withdrawn'
+  warningType: String!
+
+  # Year of withdrawal
+  year: Int
+
+  #  label of the curated EFO term that represents the adverse outcome
+  efoTerm: String
+
+  # ID of the curated EFO term that represents the adverse outcome
+  efoId: String
+
+  # ID of the curated EFO term that represents the high level warning class
+  efoIdForWarningClass: String
+  meddraSocCode: String
+}
+
+type DrugWarningReference {
+  id: String!
+  source: String!
+  url: String!
+}
+
+union EntityUnionType = Target | Drug | Disease
+
+# Evidence for a Target-Disease pair
+type Evidence {
+  # Evidence identifier
+  id: String!
+
+  # Evidence score
+  score: Float!
+
+  # Target evidence
+  target: Target!
+
+  # Disease evidence
+  disease: Disease!
+  biomarkerName: String
+  biomarkers: biomarkers
+  diseaseCellLines: [DiseaseCellLine!]
+  cohortPhenotypes: [String!]
+  targetInModel: String
+  reactionId: String
+  reactionName: String
+  projectId: String
+
+  # Variant evidence
+  variantId: String
+
+  # Variant dbSNP identifier
+  variantRsId: String
+
+  # Confidence interval lower-bound
+  oddsRatioConfidenceIntervalLower: Float
+
+  # Sample size
+  studySampleSize: Long
+  variantAminoacidDescriptions: [String!]
+  mutatedSamples: [EvidenceVariation!]
+  drug: Drug
+  drugFromSource: String
+  drugResponse: Disease
+  cohortShortName: String
+  diseaseModelAssociatedModelPhenotypes: [LabelledElement!]
+  diseaseModelAssociatedHumanPhenotypes: [LabelledElement!]
+  significantDriverMethods: [String!]
+  pValueExponent: Long
+  log2FoldChangePercentileRank: Long
+  biologicalModelAllelicComposition: String
+  confidence: String
+  clinicalPhase: Float
+  resourceScore: Float
+  variantFunctionalConsequence: SequenceOntologyTerm
+  variantFunctionalConsequenceFromQtlId: SequenceOntologyTerm
+  biologicalModelGeneticBackground: String
+  urls: [LabelledUri!]
+
+  # list of pub med publications ids
+  literature: [String!]
+
+  # list of central pub med publications ids
+  pubMedCentralIds: [String!]
+  studyCases: Long
+  studyOverview: String
+  allelicRequirements: [String!]
+  datasourceId: String!
+  datatypeId: String!
+  oddsRatioConfidenceIntervalUpper: Float
+  clinicalStatus: String
+  log2FoldChangeValue: Float
+  oddsRatio: Float
+  cohortDescription: String
+  publicationYear: Long
+  diseaseFromSource: String
+  diseaseFromSourceId: String
+  targetFromSourceId: String
+  targetModulation: String
+  textMiningSentences: [EvidenceTextMiningSentence!]
+  studyId: String
+  clinicalSignificances: [String!]
+  cohortId: String
+  pValueMantissa: Float
+  pathways: [Pathway!]
+  publicationFirstAuthor: String
+  alleleOrigins: [String!]
+  biologicalModelId: String
+  biosamplesFromSource: [String!]
+  diseaseFromSourceMappedId: String
+  beta: Float
+  betaConfidenceIntervalLower: Float
+  betaConfidenceIntervalUpper: Float
+  studyStartDate: String
+  studyStopReason: String
+
+  # Predicted reason(s) why the study has been stopped based on studyStopReason
+  studyStopReasonCategories: [String!]
+  targetFromSource: String
+  cellLineBackground: String
+  contrast: String
+  crisprScreenLibrary: String
+  cellType: String
+  statisticalTestTail: String
+  interactingTargetFromSourceId: String
+  phenotypicConsequenceLogFoldChange: Float
+  phenotypicConsequenceFDR: Float
+  phenotypicConsequencePValue: Float
+  geneticInteractionScore: Float
+  geneticInteractionPValue: Float
+  geneticInteractionFDR: Float
+  biomarkerList: [NameDescription!]
+  expectedConfidence: String
+  projectDescription: String
+  validationHypotheses: [ValidationHypothesis!]
+  geneInteractionType: String
+  targetRole: String
+  interactingTargetRole: String
+
+  # Genetic origin of a population
+  ancestry: String
+
+  # Identifier of the ancestry in the HANCESTRO ontology
+  ancestryId: String
+
+  # The statistical method used to calculate the association
+  statisticalMethod: String
+
+  # Overview of the statistical method used to calculate the association
+  statisticalMethodOverview: String
+
+  # Number of cases in a case-control study that carry at least one allele of the qualifying variant
+  studyCasesWithQualifyingVariants: Long
+
+  # Identifier in HGVS notation of the disease-causing variant
+  variantHgvsId: String
+
+  # Release version
+  releaseVersion: String
+
+  # Release date
+  releaseDate: String
+
+  # Warning message
+  warningMessage: String
+}
+
+type EvidenceSource {
+  datasource: String!
+  datatype: String!
+}
+
+type EvidenceTextMiningSentence {
+  dEnd: Long!
+  tEnd: Long!
+  dStart: Long!
+  tStart: Long!
+  section: String!
+  text: String!
+}
+
+# Sequence Ontology Term
+type EvidenceVariation {
+  functionalConsequence: SequenceOntologyTerm
+  numberMutatedSamples: Long
+  numberSamplesTested: Long
+  numberSamplesWithMutationType: Long
+}
+
+# Evidence for a Target-Disease pair
+type Evidences {
+  count: Long!
+  cursor: String
+  rows: [Evidence!]!
+}
+
+type Expression {
+  tissue: Tissue!
+  rna: RNAExpression!
+  protein: ProteinExpression!
+}
+
+type GeneEssentialityScreen {
+  cellLineName: String
+  depmapId: String
+  diseaseCellLineId: String
+  diseaseFromSource: String
+  expression: Float
+  geneEffect: Float
+  mutation: String
+}
+
+type GeneOntology {
+  aspect: String!
+  evidence: String!
+  geneProduct: String!
+  source: String!
+
+  # Gene ontology term
+  term: GeneOntologyTerm!
+}
+
+type GeneOntologyTerm {
+  id: String!
+  name: String!
+}
+
+type GenomicLocation {
+  chromosome: String!
+  start: Long!
+  end: Long!
+  strand: Int!
+}
+
+# Phenotype entity
+type HPO {
+  # Open Targets hpo id
+  id: String!
+
+  # Phenotype name
+  name: String!
+
+  # Phenotype description
+  description: String
+
+  # namespace
+  namespace: [String!]
+}
+
+type HallmarkAttribute {
+  name: String!
+  description: String!
+  pmid: Long
+}
+
+type Hallmarks {
+  cancerHallmarks: [CancerHallmark!]!
+  attributes: [HallmarkAttribute!]!
+}
+
+type Homologue {
+  homologyType: String!
+  queryPercentageIdentity: Float!
+  speciesId: String!
+  speciesName: String!
+  targetGeneId: String!
+  targetGeneSymbol: String!
+  targetPercentageIdentity: Float!
+  isHighConfidence: String
+}
+
+type IdAndSource {
+  id: String!
+  source: String!
+}
+
+type IndicationReference {
+  ids: [String!]
+  source: String!
+}
+
+type IndicationRow {
+  maxPhaseForIndication: Float!
+  references: [IndicationReference!]
+
+  # Disease
+  disease: Disease!
+}
+
+type Indications {
+  rows: [IndicationRow!]!
+  count: Long!
+  approvedIndications: [String!]
+}
+
+type Interaction {
+  intA: String!
+  targetA: Target
+  intB: String!
+  targetB: Target
+  intABiologicalRole: String!
+  intBBiologicalRole: String!
+  score: Float
+  count: Long!
+  sourceDatabase: String!
+  speciesA: InteractionSpecies
+  speciesB: InteractionSpecies
+
+  # List of evidences for this interaction
+  evidences: [InteractionEvidence!]!
+}
+
+type InteractionEvidence {
+  evidenceScore: Float
+  expansionMethodMiIdentifier: String
+  expansionMethodShortName: String
+  hostOrganismScientificName: String
+  hostOrganismTaxId: Long
+  intASource: String!
+  intBSource: String!
+  interactionDetectionMethodMiIdentifier: String!
+  interactionDetectionMethodShortName: String!
+  interactionIdentifier: String
+  interactionTypeMiIdentifier: String
+  interactionTypeShortName: String
+  participantDetectionMethodA: [InteractionEvidencePDM!]
+  participantDetectionMethodB: [InteractionEvidencePDM!]
+  pubmedId: String
+}
+
+type InteractionEvidencePDM {
+  miIdentifier: String
+  shortName: String
+}
+
+type InteractionResources {
+  databaseVersion: String!
+  sourceDatabase: String!
+}
+
+type InteractionSpecies {
+  mnemonic: String
+  scientificName: String
+  taxonId: Long
+}
+
+type Interactions {
+  count: Long!
+  rows: [Interaction!]!
+}
+
+# A key-value pair
+type KeyValue {
+  key: String!
+  value: String!
+}
+
+# An array of key-value pairs
+type KeyValueArray {
+  items: [KeyValue!]!
+}
+
+# Clinical precedence entry for drugs with investigational or approved indications targeting gene products according to their curated mechanism of action. Entries are grouped by target, disease, drug, phase, status and mechanism of action
+type KnownDrug {
+  # Drug target approved symbol based on curated mechanism of action
+  approvedSymbol: String!
+  approvedName: String!
+
+  # Curated disease indication
+  label: String!
+
+  # Drug name
+  prefName: String!
+
+  # Drug modality
+  drugType: String!
+
+  # Drug target Open Targets id based on curated mechanism of action
+  targetId: String!
+
+  # Curated disease indication Open Targets id
+  diseaseId: String!
+
+  # Open Targets drug id
+  drugId: String!
+
+  # Clinical Trial phase
+  phase: Float!
+
+  # Mechanism of Action description
+  mechanismOfAction: String!
+
+  # Trial status
+  status: String
+
+  # Drug target class based on curated mechanism of action
+  targetClass: [String!]!
+
+  # Source urls for FDA or package inserts
+  references: [KnownDrugReference!]!
+
+  # Clinicaltrials.gov identifiers on entry trials
+  ctIds: [String!]!
+
+  # Source urls from clinical trials
+  urls: [URL!]!
+
+  # Curated disease indication entity
+  disease: Disease
+
+  # Drug target entity based on curated mechanism of action
+  target: Target
+
+  # Curated drug entity
+  drug: Drug
+}
+
+type KnownDrugReference {
+  source: String!
+  ids: [String!]!
+  urls: [String!]!
+}
+
+# Set of clinical precedence for drugs with investigational or approved indications targeting gene products according to their curated mechanism of action
+type KnownDrugs {
+  # Total unique drugs/molecules
+  uniqueDrugs: Long!
+
+  # Total unique diseases or phenotypes
+  uniqueDiseases: Long!
+
+  # Total unique known mechanism of action targetsTotal unique known mechanism of action targets
+  uniqueTargets: Long!
+
+  # Total number of entries
+  count: Long!
+  cursor: String
+
+  # Clinical precedence entries with known mechanism of action
+  rows: [KnownDrug!]!
+}
+
+type LabelAndSource {
+  label: String!
+  source: String!
+}
+
+type LabelledElement {
+  id: String!
+  label: String!
+}
+
+type LabelledUri {
+  url: String!
+  niceName: String!
+}
+
+# Linked Disease Entities
+type LinkedDiseases {
+  count: Int!
+
+  # Disease List
+  rows: [Disease!]!
+}
+
+# Linked Target Entities
+type LinkedTargets {
+  count: Int!
+
+  # Target List
+  rows: [Target!]!
+}
+
+type LocationAndSource {
+  location: String!
+  source: String!
+  termSL: String
+  labelSL: String
+}
+
+type Match {
+  mappedId: String!
+  matchedLabel: String!
+  sectionStart: Long
+  sectionEnd: Long
+  startInSentence: Long!
+  endInSentence: Long!
+
+  # Type of the matched label
+  matchedType: String!
+}
+
+type MechanismOfActionRow {
+  mechanismOfAction: String!
+  actionType: String
+  targetName: String
+  references: [Reference!]
+
+  # Target List
+  targets: [Target!]!
+}
+
+type MechanismsOfAction {
+  rows: [MechanismOfActionRow!]!
+  uniqueActionTypes: [String!]!
+  uniqueTargetTypes: [String!]!
+}
+
+type Meta {
+  name: String!
+  apiVersion: APIVersion!
+  dataVersion: DataVersion!
+}
+
+type ModelPhenotypeClasses {
+  id: String!
+  label: String!
+}
+
+type MousePhenotype {
+  biologicalModels: [BiologicalModels!]!
+  modelPhenotypeClasses: [ModelPhenotypeClasses!]!
+  modelPhenotypeId: String!
+  modelPhenotypeLabel: String!
+  targetInModel: String!
+  targetInModelEnsemblId: String
+  targetInModelMgiId: String!
+}
+
+type NameDescription {
+  name: String!
+  description: String!
+}
+
+type NamedAggregation {
+  name: String!
+  uniques: Long
+  rows: [Aggregation!]!
+}
+
+type OtarProject {
+  otarCode: String!
+  status: String!
+  projectName: String!
+  reference: String!
+  integratesInPPP: Boolean!
+}
+
+input Pagination {
+  index: Int!
+  size: Int!
+}
+
+# Pathway entry
+type Pathway {
+  # Pathway ID
+  id: String!
+
+  # Pathway Name
+  name: String!
+}
+
+type ProteinExpression {
+  reliability: Boolean!
+  level: Int!
+  cellType: [CellType!]!
+}
+
+type Publication {
+  pmid: String!
+  pmcid: String
+
+  # Publication Date
+  publicationDate: String
+
+  # Unique counts per matched keyword
+  sentences: [Sentence!]
+}
+
+# Publication list
+type Publications {
+  count: Long!
+  filteredCount: Long!
+
+  # Earliest publication year.
+  earliestPubYear: Int!
+  cursor: String
+  rows: [Publication!]!
+}
+
+type Query {
+  # Return Open Targets API metadata information
+  meta: Meta!
+
+  # Return a Target
+  target(
+    # Ensembl ID
+    ensemblId: String!
+  ): Target
+
+  # Return Targets
+  targets(
+    # List of Ensembl IDs
+    ensemblIds: [String!]!
+  ): [Target!]!
+
+  # Return a Disease
+  disease(
+    # EFO ID
+    efoId: String!
+  ): Disease
+
+  # Return Diseases
+  diseases(
+    # EFO ID
+    efoIds: [String!]!
+  ): [Disease!]!
+
+  # Return a drug
+  drug(
+    # Chembl ID
+    chemblId: String!
+  ): Drug
+
+  # Return drugs
+  drugs(
+    # List of Chembl IDs
+    chemblIds: [String!]!
+  ): [Drug!]!
+
+  # Multi entity search
+  search(
+    # Query string
+    queryString: String!
+
+    # List of entity names to search for (target, disease, drug,...)
+    entityNames: [String!]
+    page: Pagination
+  ): SearchResults!
+
+  # The complete list of all possible datasources
+  associationDatasources: [EvidenceSource!]!
+
+  # The complete list of all possible datasources
+  interactionResources: [InteractionResources!]!
+
+  # Gene ontology terms
+  geneOntologyTerms(
+    # List of GO IDs, eg. GO:0005515
+    goIds: [String!]!
+  ): [GeneOntologyTerm]!
+}
+
+type RNAExpression {
+  zscore: Long!
+  value: Float!
+  unit: String!
+  level: Int!
+}
+
+type ReactomePathway {
+  pathway: String!
+  pathwayId: String!
+  topLevelTerm: String!
+}
+
+type Reference {
+  ids: [String!]
+  source: String!
+  urls: [String!]
+}
+
+type SafetyBiosample {
+  tissueLabel: String
+  tissueId: String
+  cellLabel: String
+  cellFormat: String
+  cellId: String
+}
+
+type SafetyEffects {
+  direction: String!
+  dosing: String
+}
+
+type SafetyLiability {
+  biosamples: [SafetyBiosample!]
+  datasource: String!
+  effects: [SafetyEffects!]
+  event: String
+  eventId: String
+  literature: String
+  url: String
+  studies: [SafetyStudy!]
+}
+
+type SafetyStudy {
+  name: String
+  description: String
+  type: String
+}
+
+type ScoredComponent {
+  id: String!
+  score: Float!
+}
+
+type SearchResult {
+  id: String!
+  entity: String!
+  category: [String!]!
+  name: String!
+  description: String
+  keywords: [String!]
+  multiplier: Float!
+  prefixes: [String!]
+  ngrams: [String!]
+  score: Float!
+  highlights: [String!]!
+
+  # Associations for a fixed target
+  object: EntityUnionType
+}
+
+type SearchResultAggCategory {
+  name: String!
+  total: Long!
+}
+
+type SearchResultAggEntity {
+  name: String!
+  total: Long!
+  categories: [SearchResultAggCategory!]!
+}
+
+type SearchResultAggs {
+  total: Long!
+  entities: [SearchResultAggEntity!]!
+}
+
+# Search results
+type SearchResults {
+  # Aggregations
+  aggregations: SearchResultAggs
+
+  # Return combined
+  hits: [SearchResult!]!
+
+  # Total number or results given a entity filter
+  total: Long!
+}
+
+type Sentence {
+  # Section of the publication (either title or abstract)
+  section: String!
+
+  # List of matches
+  matches: [Match!]!
+}
+
+# Sequence Ontology Term
+type SequenceOntologyTerm {
+  # Sequence Ontology ID
+  id: String!
+
+  # Sequence Ontology Label
+  label: String!
+}
+
+type Similarity {
+  category: String!
+  id: String!
+  score: Float!
+
+  # Similarity label optionally resolved into an entity
+  object: EntityUnionType
+}
+
+# Target entity
+type Target {
+  # Open Targets target id
+  id: String!
+  alternativeGenes: [String!]!
+
+  # HGNC approved symbol
+  approvedSymbol: String!
+
+  # Approved gene name
+  approvedName: String!
+
+  # Molecule biotype
+  biotype: String!
+  chemicalProbes: [ChemicalProbe!]!
+
+  # Database cross references
+  dbXrefs: [IdAndSource!]!
+
+  # ...
+  functionDescriptions: [String!]!
+
+  # Symbol synonyms
+  geneticConstraint: [Constraint!]!
+
+  # Chromosomic location
+  genomicLocation: GenomicLocation!
+
+  # Gene Ontology annotations
+  geneOntology: [GeneOntology!]!
+
+  # Target-modulated essential alterations in cell physiology that dictate malignant growth
+  hallmarks: Hallmarks
+
+  # Gene homologues
+  homologues: [Homologue!]!
+
+  # Reactome pathways
+  pathways: [ReactomePathway!]!
+
+  # Related protein IDs
+  proteinIds: [IdAndSource!]!
+
+  # Known target safety effects and target safety risk information
+  safetyLiabilities: [SafetyLiability!]!
+
+  # Location of ...
+  subcellularLocations: [LocationAndSource!]!
+
+  # Alternative names and symbols
+  synonyms: [LabelAndSource!]!
+
+  # Alternative symbols
+  symbolSynonyms: [LabelAndSource!]!
+
+  # Alternative names
+  nameSynonyms: [LabelAndSource!]!
+
+  # Obsolete symbols
+  obsoleteSymbols: [LabelAndSource!]!
+
+  # Obsolete names
+  obsoleteNames: [LabelAndSource!]!
+  targetClass: [TargetClass!]!
+
+  # Target Enabling Package (TEP)
+  tep: Tep
+
+  # Target druggability assessment
+  tractability: [Tractability!]!
+
+  # Ensembl transcript IDs
+  transcriptIds: [String!]!
+
+  # Return similar labels using a model Word2CVec trained with PubMed
+  similarEntities(
+    # List of IDs either EFO ENSEMBL CHEMBL
+    additionalIds: [String!]
+
+    # List of entity names to search for (target, disease, drug,...)
+    entityNames: [String!]
+
+    # Threshold similarity between 0 and 1
+    threshold: Float
+    size: Int
+  ): [Similarity!]!
+
+  # Return the list of publications that mention the main entity, alone or in combination with other entities
+  literatureOcurrences(
+    # List of IDs either EFO ENSEMBL CHEMBL
+    additionalIds: [String!]
+
+    # Year at the lower end of the filter
+    startYear: Int
+
+    # Month at the lower end of the filter
+    startMonth: Int
+
+    # Year at the higher end of the filter
+    endYear: Int
+
+    # Month at the higher end of the filter
+    endMonth: Int
+    cursor: String
+  ): Publications!
+
+  # The complete list of all possible datasources
+  evidences(
+    # EFO ID
+    efoIds: [String!]!
+
+    # List of datasource ids
+    datasourceIds: [String!]
+    size: Int
+    cursor: String
+  ): Evidences!
+
+  # Biological pathway membership from Reactome
+  interactions(
+    # Database name
+    sourceDatabase: String
+    page: Pagination
+  ): Interactions
+
+  # Biological pathway membership from Reactome
+  mousePhenotypes: [MousePhenotype!]!
+
+  # RNA and Protein baseline expression
+  expressions: [Expression!]!
+
+  # Clinical precedence for drugs with investigational or approved indications targeting gene products according to their curated mechanism of action
+  knownDrugs(
+    # Query string
+    freeTextQuery: String
+    size: Int
+    cursor: String
+  ): KnownDrugs
+
+  # associations on the fly
+  associatedDiseases(
+    Bs: [String!]
+
+    # Use disease ontology to capture evidences from all descendants to build associations
+    enableIndirect: Boolean
+    datasources: [DatasourceSettingsInput!]
+    aggregationFilters: [AggregationFilter!]
+    BFilter: String
+    orderByScore: String
+    page: Pagination
+  ): AssociatedDiseases!
+
+  # target priorisations.
+  priorisations: KeyValueArray
+
+  # isEssential
+  isEssential: Boolean
+
+  # depMapEssentiality
+  depMapEssentiality: [DepMapEssentiality!]
+}
+
+type TargetClass {
+  id: Long!
+  label: String!
+  level: String!
+}
+
+# Target Enabling Package (TEP)
+type Tep {
+  name: String!
+  uri: String!
+  therapeuticArea: String!
+  description: String!
+}
+
+# Tissue, organ and anatomical system
+type Tissue {
+  # UBERON id
+  id: String!
+
+  # UBERON tissue label
+  label: String!
+
+  # Anatomical systems membership
+  anatomicalSystems: [String!]!
+
+  # Organs membership
+  organs: [String!]!
+}
+
+type Tractability {
+  label: String!
+  modality: String!
+  value: Boolean!
+}
+
+# Source URL for clinical trials, FDA and package inserts
+type URL {
+  # resource url
+  url: String!
+
+  # resource name
+  name: String!
+}
+
+type ValidationHypothesis {
+  name: String!
+  description: String!
+  status: String!
+}
+
+type biomarkers {
+  geneExpression: [geneExpression!]
+  variant: [variant!]
+}
+
+type geneExpression {
+  name: String
+  id: GeneOntologyTerm
+}
+
+type variant {
+  id: String
+  name: String
+  functionalConsequenceId: SequenceOntologyTerm
+}
+
+# The `Long` scalar type represents non-fractional signed whole numeric values. Long can represent values between -(2^63) and 2^63 - 1.
+scalar Long

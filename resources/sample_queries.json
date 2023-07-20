@@ -1,0 +1,47 @@
+[
+  {
+    "description": "To access top 50 associations data for a given target or disease through our GraphQL API, you will need to iterate through each page of results using the associatedDiseases field and the page argument (associatedDiseases(page: { size: x, index:y })). Diseases associated with CAV1 (ENSG00000105974).",
+    "query": "query top50targetDiseaseAssociations { target(ensemblId: \"ENSG00000105974\") { id approvedSymbol approvedName associatedDiseases(page: { size: 50, index: 0 }) { count rows { score disease { id name } } } } }"
+  },
+  {
+    "description": "Find all drugs for APP",
+    "query": "query findKnownDrugsForAGivenTarget { target(ensemblId: \"ENSG00000142192\") { knownDrugs { uniqueDrugs rows { drug{ id isApproved yearOfFirstApproval hasBeenWithdrawn blackBoxWarning name } disease{ name id } phase status ctIds } } } }"
+  },
+  {
+    "description": "Specify datasource weights of associated diseases for a fixed target or associated targets for a fixed disease.",
+    "query": "query DiseaseAssociationsQuery { disease(efoId: \"EFO_0005774\") { id associatedTargets( page: { index: 0, size: 50 } orderByScore: \"score\" BFilter: \"\" aggregationFilters: [] datasources: [{ id: \"ot_genetics\", weight: 0.5, propagate: false }] ) { count rows { target { id approvedSymbol approvedName } score datatypeScores { componentId: id score } } } } }"
+  },
+  {
+    "description": "TARGET-TO-DISEASE ASSOCIATION: Find diseases associated with IL22",
+    "query": "query associatedDiseases { target(ensemblId: \"ENSG00000127318\") { id approvedSymbol associatedDiseases { count rows { disease { id name } datasourceScores { id score } } } } }"
+  },
+  {
+    "description": "DISEASE-TO-TARGET ASSOCIATION: Find targets associated with Alzheimer's disease",
+    "query": "query associatedTargets { disease(efoId: \"EFO_0000249\") { id name associatedTargets { count rows { target { id approvedSymbol } score } } } }"
+  },
+  {
+    "description": "Find clinical symptoms and phenotypes for Acute Myeloid Leukemia",
+    "query": "query diseaseAnnotation { disease(efoId: \"EFO_0000222\") { id name phenotypes { rows { phenotypeHPO { id name description namespace } phenotypeEFO { id name } evidence { aspect bioCuration diseaseFromSourceId diseaseFromSource evidenceType frequency frequencyHPO { name id } qualifierNot onset { name id } modifiers { name id } references sex resource } } } } }"
+  },
+  {
+    "description": "Search for all information on insulin",
+    "query": "query searchInsulin { search(queryString:\"insulin\"){ total hits { id entity description } } }"
+  },
+  {
+    "description": "Example query to get how many entries there are in each entity category for Insulin",
+    "query": "query searchInsulinCatCounts { search(queryString:\"insulin\"){ aggregations { total entities { total name } } } }"
+  },
+  {
+    "description": "Which diseases are associated by fasudil?",
+    "query": "query searchFasudil {\n  search(queryString: \"fasudil\", entityNames: \"disease\") {\n    total\n    hits {\n      id\n      name\n      entity\n    }\n  }\n}"
+  },
+  {
+    "description": "List the two most related diseases associated with genes targeted by fasudil",
+    "query": "query searchFasudil {\n  search(queryString: \"fasudil\", entityNames: \"target\") {\n    total\n    hits {\n      id\n      name\n      entity\n      object {\n        ... on Target {\n          associatedDiseases (orderByScore: \"score\", page: { size: 2, index: 0 }) {\n            rows {\n              score\n              disease {name}\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "description": "What are targets associated with vorinostat?",
+    "query": "query searchVorinostat {\n  search(queryString: \"vorinostat\", entityNames: \"target\") {\n    total\n    hits {\n      id\n      name\n      entity\n    }\n  }\n}"
+  }
+  
+]
