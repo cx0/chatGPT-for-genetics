@@ -22,7 +22,7 @@ class Chat:
     
     def save_to_disk(self, response: str, dirtype: str) -> None:
         filename = self.uuid + "_" + self.timestamp + ".json"
-        workspace_directory = Path(f"workspace/logs/{dirtype}/")
+        workspace_directory = Path(f"logs/{dirtype}/")
         file_path = workspace_directory / filename
         with open(file_path, 'w') as file:
             file.write(response)
@@ -36,14 +36,12 @@ class Chat:
 
     def suggest(self, user_input: str) -> str:
         suggestion = ChatCompleter().response(messages=self.generate_suggestion_messages(user_input))
-        print('Here is a suggested query:\n```graphql\n', suggestion, '\n```\n')
         self.save_to_disk(suggestion, 'suggestions')
         return suggestion
     
     def complete(self, user_input: str) -> str:
         suggestion = self.suggest(user_input)
         query_result = OpenTargetHandler().query(suggestion)
-        print('Here is the query result:\n', query_result, '\n')
         self.save_to_disk(query_result, 'results')
         return query_result
     
@@ -54,8 +52,9 @@ class Chat:
         ]
     
     def interpret(self, user_input: str) -> str:
+        print("Querying the Open Targets API...")
         suggestion = self.complete(user_input=user_input)
         interpretation = ChatCompleter().response(messages=self.generate_query_interpretation(user_input, suggestion))
-        print('Here is the interpretation:\n', interpretation)
+        print(interpretation)
         self.save_to_disk(interpretation, 'interpretations')
         return interpretation
