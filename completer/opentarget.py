@@ -15,7 +15,6 @@ class OpenTargetHandler:
             response.raise_for_status()
         except requests.exceptions.HTTPError as err:
             print(err)
-            print(f"Query string: {query_string}")
         return dict(json.loads(response.text))['data']
     
     def resolve_search_key(self, results_dict: dict) -> dict:
