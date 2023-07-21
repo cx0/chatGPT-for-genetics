@@ -1,0 +1,10 @@
+query searchVorinostat {
+  search(queryString: "vorinostat", entityNames: "target") {
+    total
+    hits {
+      id
+      name
+      entity
+    }
+  }
+}

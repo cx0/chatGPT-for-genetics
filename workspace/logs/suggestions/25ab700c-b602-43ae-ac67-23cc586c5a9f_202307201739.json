@@ -1,0 +1,13 @@
+query top2DiseasesAssociatedWithBRCA1 {
+  target(ensemblId: "ENSG00000012048") {
+    associatedDiseases(page: { size: 2, index: 0 }, orderByScore: "score") {
+      rows {
+        score
+        disease {
+          id
+          name
+        }
+      }
+    }
+  }
+}

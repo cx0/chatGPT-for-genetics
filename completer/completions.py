@@ -22,4 +22,4 @@ class ChatCompleter:
             presence_penalty=0,
             stop=["###"]
         )
-        return response['choices'][0]['message']
+        return response['choices'][0]['message']['content']

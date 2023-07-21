@@ -1,0 +1,19 @@
+query findDrugsForUlcerativeColitis {
+  disease(efoId: "EFO_0000729") {
+    id
+    name
+    knownDrugs {
+      uniqueDrugs
+      rows {
+        drug {
+          id
+          name
+          isApproved
+          yearOfFirstApproval
+          hasBeenWithdrawn
+          blackBoxWarning
+        }
+      }
+    }
+  }
+}
