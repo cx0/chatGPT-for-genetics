@@ -27,7 +27,7 @@ class Chat:
         with open(file_path, 'w') as file:
             file.write(response)
     
-    def generate_messages(self, user_input: str) -> List[Dict]:
+    def generate_suggestion_messages(self, user_input: str) -> List[Dict]:
         return [
             { "role": "user", "content": f"Define a schema with object types: {SDLSchema().sdl}" },
             { "role": "user", "content": f"The following queries return correct results: {self.sample_queries}" },
@@ -35,13 +35,27 @@ class Chat:
         ]
 
     def suggest(self, user_input: str) -> str:
-        suggestion = ChatCompleter().response(messages=self.generate_messages(user_input))
+        suggestion = ChatCompleter().response(messages=self.generate_suggestion_messages(user_input))
+        print('Here is a suggested query:\n```graphql\n', suggestion, '\n```\n')
         self.save_to_disk(suggestion, 'suggestions')
         return suggestion
     
     def complete(self, user_input: str) -> str:
         suggestion = self.suggest(user_input)
         query_result = OpenTargetHandler().query(suggestion)
-        
+        print('Here is the query result:\n', query_result, '\n')
         self.save_to_disk(query_result, 'results')
         return query_result
+    
+    def generate_query_interpretation(self, user_input: str, query_result: str) -> List[Dict]:
+        return [
+            { "role": "user", "content": f"Consider the following query result from OpenTargets API: {query_result}" },
+            { "role": "user", "content": f"Now interpret the query result as it relates to the following question: {user_input}" },
+        ]
+    
+    def interpret(self, user_input: str) -> str:
+        suggestion = self.complete(user_input=user_input)
+        interpretation = ChatCompleter().response(messages=self.generate_query_interpretation(user_input, suggestion))
+        print('Here is the interpretation:\n', interpretation)
+        self.save_to_disk(interpretation, 'interpretations')
+        return interpretation
