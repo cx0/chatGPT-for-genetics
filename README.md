@@ -1,5 +1,13 @@
 # Chat with OpenTargets CLI
 
+## Demo
+
+View the screen recording of Chat with OpenTargets on [Youtube](https://www.youtube.com/watch?v=kAf7GuBpOAU).
+
+[![Screen Recording of Chat with OpenTargets](https://img.youtube.com/vi/kAf7GuBpOAU/0.jpg)](https://www.youtube.com/watch?v=kAf7GuBpOAU "Screen Recording of Chat with OpenTargets")
+
+
+
 The Chat with OpenTargets command line interface (CLI) provides an interactive way to generate and interpret queries to the OpenTargets database using the OpenAI GPT language model. This started out as a project forked from [chatGPT-for-genetics](https://github.com/cx0/chatGPT-for-genetics). Check out their repo for the inspiration. 
 
 ## Setup
