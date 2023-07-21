@@ -52,7 +52,6 @@ class Chat:
         ]
     
     def interpret(self, user_input: str) -> str:
-        print("Querying the Open Targets API...")
         suggestion = self.complete(user_input=user_input)
         interpretation = ChatCompleter().response(messages=self.generate_query_interpretation(user_input, suggestion))
         print(interpretation)

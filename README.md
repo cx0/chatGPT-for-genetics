@@ -1,41 +1,82 @@
-## chatGPT for genetics
+# Chat with OpenTargets CLI
 
-This is the code repo for my submission at [Scale AI Generative AI & LLM hackathon](https://twitter.com/alexandr_wang/status/1610361991830331392) last week. Please feel free to fork or submit PR for feature request.
+The Chat with OpenTargets command line interface (CLI) provides an interactive way to generate and interpret queries to the OpenTargets database using the OpenAI GPT language model. This started out as a project forked from [chatGPT-for-genetics](https://github.com/cx0/chatGPT-for-genetics). Check out their repo for the inspiration. 
 
-### Demo
+## Setup
 
-Q: What's the disease / phenotype associated with gene of my interest?
+The setup process involves creating a new conda environment, installing the necessary packages, and setting up the necessary directories for logging.
 
-![Asking Open Targets questions about gene-phenotype associations.](demo.svg)
+### Requirements
 
-### Motivation
+Make sure you have [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) installed on your machine.
 
-[Open Targets](https://platform.opentargets.org/) is the largest public-private partnership to curate information about genetic diseases, clinical trials and molecular entities (e.g., drugs) to accelerate drug discovery research. While the web interface provides a user-friendly web interface for making simple queries, it does not provide a convenient search engine to support more sophisticated queries.
+### Steps
 
-Fortunately, Open Targets team provides a graphQL API to access and query relevant data from a number of useful endpoints. However, most biologists are not comfortable to write their own graphQL queries or access these data via API. Can we leverage GPT-based search engines to translate natural language to valid graphQL queries to navigate the richest drug discovery dataset?
+1. Download or clone the repository to your local machine.
 
-### Inspiration
+2. Navigate to the project directory in your terminal.
 
-I really liked [BirdSQL](https://twitter.com/perplexity_ai/status/1603441221753372673) - Perplexity AI's GPT-based search engine using OpenAI Codex to translate natural language to SQL queries to navigate Twitter. Make sure to check it out yourself [here](https://www.perplexity.ai/sql). Great choice to showcase the capabilities of their search engine and very impressive implementation overall!
+3. Run the setup script with the command `source setup.sh`. This script does the following:
 
-### Implementation
+    - Creates a new conda environment named `chatwithopentargets` with Python 3.11.
+    - Activates the new conda environment.
+    - Installs the required Python packages as specified in the `setup.py` file. This includes the `click` and `openai` packages, and makes the `opentargets` CLI tool available.
+    - Creates directories for log files: `logs/suggestions`, `logs/results`, and `logs/interpretations`.
 
-As you can see with BirdSQL, [OpenAI's Codex tool](https://www.youtube.com/watch?v=SGUCcjHTmGY) does a wonderful job translating natural language to SQL queries. OpenAI suggests specific prompt templates to improve the generated text response. For text-to-SQL code completion task, they suggest to prompt the model with SQL tables and their properties. I was curious to find out whether Codex models are capable of translating text to graphQL queries given a similar schema.
+## Usage
 
+After the setup, you can use the `opentargets` CLI tool, which provides the following commands:
+
+- `suggest`: Generates a suggested query for the provided question.
+- `complete`: Completes a provided question, generating a query and returning the query result.
+- `interpret`: Provides an interpretation of the query result for the provided question.
+- `delete-logs`: Deletes all log files in the `logs/suggestions`, `logs/results`, and `logs/interpretations` directories.
+
+You can run `opentargets` followed by any of these commands. For example:
+
+```bash
+opentargets suggest "Your question here"
+opentargets complete "Your question here"
+opentargets interpret "Your question here"
+opentargets delete-logs
 ```
-Input  : prompt template with schema + user query
-Model  : code-davinci-002 Codex model
-Output : user query in graphQL syntax
+
+Replace `"Your question here"` with your actual question, enclosed in quotes.
+
+## Representative example:
+
+```bash
+(chatwithopentargets) chatGPT-for-genetics % opentargets interpret
+Please enter a question: Top 5 targets for prostate cancer
+Querying the Open Targets API...
+The query result provides information about the top 5 targets associated with prostate cancer. Each target is represented by its unique identifier (id), approved symbol, and approved name. The targets are ranked based on their scores, which indicate their relevance or significance in relation to prostate cancer.
+
+The top 5 targets for prostate cancer, according to the query result, are as follows:
+
+1. Target: ENSG00000169083
+   Approved Symbol: AR
+   Approved Name: Androgen Receptor
+   Score: 0.8563968907935317
+
+2. Target: ENSG00000171862
+   Approved Symbol: PTEN
+   Approved Name: Phosphatase and Tensin Homolog
+   Score: 0.8294982223790262
+
+3. Target: ENSG00000139618
+   Approved Symbol: BRCA2
+   Approved Name: BRCA2 DNA Repair Associated
+   Score: 0.8137493155511473
+
+4. Target: ENSG00000183765
+   Approved Symbol: CHEK2
+   Approved Name: Checkpoint Kinase 2
+   Score: 0.81080286658196
+
+5. Target: ENSG00000141510
+   Approved Symbol: TP53
+   Approved Name: Tumor Protein p53
+   Score: 0.7684696851450488
+
+These targets have been identified as having high relevance or involvement in prostate cancer based on their scores. Researchers and medical professionals can further investigate these targets to understand their role in the development, progression, and treatment of prostate cancer.
 ```
-
-Once we have a valid graphQL query, we can submit this query to the relevant API endpoint provided by [Open Targets Platform GraphQL](https://platform-docs.opentargets.org/data-access/graphql-api) and relay the response to the user. This approach did not work well. Codex model populated unnecessary extra fields that resulted in invalid graphQL queries.
-
-Instead, providing an [illustrative example graphQL query](graphql_schema.txt) was sufficient for Codex to produce a decent text-to-graphQL translation that plays nicely with Open Target graphQL API. Demo code in this repo used this approach. I'm looking forward to exploring other prompt and fine-tuning strategies to improve text-to-graphQL translation for a wide range of Q&A tasks where there is a well-structured domain-specific graphQL API available.
-
-### TODO
-
-- [ ] SQL-to-graphQL direct translation may be a better option?
-- [ ] Expand prompt capabilities to answer other frequently asked questions
-- [ ] Hook up a Slack chatbot for more user-friendly interaction
-- [ ] Slick web interface similar to BirdSQL?
-- [ ] Implement using langchain?
