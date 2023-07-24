@@ -4,7 +4,7 @@
 
 View the screen recording of Chat with OpenTargets on [Youtube](https://www.youtube.com/watch?v=kAf7GuBpOAU).
 
-[![Screen Recording of Chat with OpenTargets](https://img.youtube.com/vi/kAf7GuBpOAU/0.jpg)](https://www.youtube.com/watch?v=kAf7GuBpOAU "Screen Recording of Chat with OpenTargets")
+[![Screen Recording of Chat with OpenTargets](resources/chatwithopentargets.gif)](https://www.youtube.com/watch?v=kAf7GuBpOAU "Screen Recording of Chat with OpenTargets")
 
 
 
