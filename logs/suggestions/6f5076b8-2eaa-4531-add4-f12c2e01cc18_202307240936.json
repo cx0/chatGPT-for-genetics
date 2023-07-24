@@ -1,0 +1,10 @@
+query searchDiabetesDrugs {
+  search(queryString: "diabetes", entityNames: "drug") {
+    total
+    hits {
+      id
+      name
+      entity
+    }
+  }
+}
