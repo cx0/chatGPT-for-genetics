@@ -1,0 +1,14 @@
+query relevantTargetsForOsteoporosis {
+  disease(efoId: "EFO_0003882") {
+    associatedTargets(orderByScore: "score", page: { size: 10, index: 0 }) {
+      rows {
+        target {
+          id
+          approvedSymbol
+          approvedName
+        }
+        score
+      }
+    }
+  }
+}
