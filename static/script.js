@@ -5,6 +5,8 @@ document.querySelector("#start-chat-form").addEventListener("submit", function(e
         document.querySelector("#start-chat-input").value = '';
         document.querySelector("#welcome-screen").hidden = true;
         document.querySelector("#chat-screen").hidden = false;
+        document.querySelector(".example-questions-container").hidden = true;
+        document.querySelector(".info-container").hidden = true;
         let userMessage = document.createElement("div");
         userMessage.className = "message user-message";
         userMessage.textContent = userInput;

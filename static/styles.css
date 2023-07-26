@@ -17,6 +17,7 @@ body {
 }
 
 
+
 #start-chat-form, #chat-form {
     width: 90%;
     max-width: 600px; 
@@ -80,6 +81,64 @@ body {
     box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.3);
     margin: 20px auto;
 }
+
+.info-container {
+    width: 80%;
+    max-width: 600px; 
+    text-align: center;
+    margin: 0 auto;
+    background-color: #fbfbfb;
+    border: 1px solid #fbfbfb;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-container p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.info-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info-container ul li a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.example-questions-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fbfbfb;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.example-questions-container h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.example-questions-container ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.example-questions-container ul li {
+    margin-bottom: 10px;
+    color: #666;
+    line-height: 1.5;
+}
+
+
+
+
 
 .message {
     margin: 10px 0;
