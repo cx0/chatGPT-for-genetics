@@ -4,33 +4,19 @@ async-timeout==4.0.2
 attrs==23.1.0
 blinker==1.6.2
 certifi==2023.5.7
-cffi @ file:///Users/runner/miniforge3/conda-bld/cffi_1671179612308/work
-cfgv @ file:///home/conda/feedstock_root/build_artifacts/cfgv_1629909281805/work
 charset-normalizer==3.2.0
 click==8.1.6
-distlib @ file:///home/conda/feedstock_root/build_artifacts/distlib_1689598491484/work
-filelock @ file:///home/conda/feedstock_root/build_artifacts/filelock_1686612785345/work
 Flask==2.3.2
 Flask-Cors==4.0.0
 frozenlist==1.4.0
-identify @ file:///home/conda/feedstock_root/build_artifacts/identify_1689794627642/work
 idna==3.4
 itsdangerous==2.1.2
 Jinja2==3.1.2
 MarkupSafe==2.1.3
 multidict==6.0.4
-nodeenv @ file:///home/conda/feedstock_root/build_artifacts/nodeenv_1683892983968/work
 openai==0.27.8
--e git+https://github.com/foadgr/chatGPT-for-genetics.git@007dffa6ca211dcd4af992d2565a8a3fbe2f2100#egg=opentargets
-platformdirs @ file:///home/conda/feedstock_root/build_artifacts/platformdirs_1689538620473/work
-pre-commit @ file:///home/conda/feedstock_root/build_artifacts/pre-commit_1686748903002/work
-pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1636257122734/work
-PyYAML @ file:///Users/runner/miniforge3/conda-bld/pyyaml_1666772577178/work
 requests==2.31.0
 tqdm==4.65.0
-typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1688315532570/work
-ukkonen @ file:///Users/runner/miniforge3/conda-bld/ukkonen_1666949121928/work
 urllib3==2.0.4
-virtualenv @ file:///home/conda/feedstock_root/build_artifacts/virtualenv_1689843851427/work
 Werkzeug==2.3.6
 yarl==1.9.2
