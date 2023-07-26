@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with our AI</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div id="welcome-screen">
+        <h1>OpenTargets: Ask Me Anything</h1>
+        <p>Our AI will do its best to answer.</p>
+        <form id="start-chat-form">
+            <input type="text" id="start-chat-input" placeholder="Type your question here">
+            <input type="submit" value="Start Chat">
+        </form>
+    </div>
+    <div id="chat-screen" hidden>
+        <div id="chat-container"></div>
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="Type your question here">
+            <input type="submit" value="Send">
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

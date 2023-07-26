@@ -6,8 +6,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
+        'openai',
         'click',
-        'openai'
+        'flask',
+        'flask-cors'
     ],
     entry_points="""
         [console_scripts]
