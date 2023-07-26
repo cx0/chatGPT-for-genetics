@@ -5,11 +5,13 @@ document.querySelector("#start-chat-form").addEventListener("submit", function(e
         document.querySelector("#start-chat-input").value = '';
         document.querySelector("#welcome-screen").hidden = true;
         document.querySelector("#chat-screen").hidden = false;
+        document.querySelector(".example-questions-container").hidden = true;
+        document.querySelector(".info-container").hidden = true;
         let userMessage = document.createElement("div");
         userMessage.className = "message user-message";
         userMessage.textContent = userInput;
         document.querySelector("#chat-container").appendChild(userMessage);
-        fetch('http://127.0.0.1:5001/chat', {
+        fetch('/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +42,7 @@ document.querySelector("#chat-form").addEventListener("submit", function(event) 
         userMessage.className = "message user-message";
         userMessage.textContent = userInput;
         document.querySelector("#chat-container").appendChild(userMessage);
-        fetch('http://127.0.0.1:5001/chat', {
+        fetch('/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ document.querySelector("#chat-form").addEventListener("submit", function(event) 
         .then(data => {
             let botMessage = document.createElement("div");
             botMessage.className = "message bot-message";
-            botMessage.innerText = data.response;
+            botMessage.innerText = JSON.parse(data.response);
             document.querySelector("#chat-container").appendChild(botMessage);
         })
         .catch((error) => {

@@ -6,15 +6,18 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-y: auto;
     transition: background-color 0.5s;
 }
+
 
 #welcome-screen {
     text-align: center;
 }
+
 
 
 #start-chat-form, #chat-form {
@@ -81,6 +84,64 @@ body {
     margin: 20px auto;
 }
 
+.info-container {
+    width: 80%;
+    max-width: 600px; 
+    text-align: center;
+    margin: 0 auto;
+    background-color: #fbfbfb;
+    border: 1px solid #fbfbfb;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-container p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.info-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info-container ul li a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.example-questions-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fbfbfb;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.example-questions-container h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.example-questions-container ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.example-questions-container ul li {
+    margin-bottom: 10px;
+    color: #666;
+    line-height: 1.5;
+}
+
+
+
+
+
 .message {
     margin: 10px 0;
     padding: 10px;
@@ -116,9 +177,19 @@ body {
 @media (max-width: 600px) {
     #chat-container {
         width: 100%;
-        height: 90vh;
+        height: 60vh;
+        padding: 10px;
+    }
+    #start-chat-form, #chat-form {
+        margin: 10px auto;
     }
     #start-chat-form input[type="text"], #chat-form input[type="text"] {
         width: 100%;
+        padding: 5px;
+    }
+    .message {
+        font-size: 14px;
+        line-height: 20px;
     }
 }
+
