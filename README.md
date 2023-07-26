@@ -1,10 +1,15 @@
-# Chat with OpenTargets CLI
+# Chat with OpenTargets Web Interface and CLI
 
 ## Demo
 
-View the screen recording of Chat with OpenTargets on [Youtube](https://www.youtube.com/watch?v=kAf7GuBpOAU).
 
-[![Screen Recording of Chat with OpenTargets](resources/chatwithopentargets.gif)](https://www.youtube.com/watch?v=kAf7GuBpOAU "Screen Recording of Chat with OpenTargets")
+
+Check out the web interface for Chat with OpenTargets ([Youtube](https://www.youtube.com/watch?v=AVcRzQQW0Sg)).
+[![Screen Recording of Chat with OpenTargets Web](resources/chatwithopentargets_web.gif)](https://www.youtube.com/watch?v=AVcRzQQW0Sg "Screen Recording of Chat with OpenTargets Web")
+
+
+View the screen recording of Chat with OpenTargets CLI ([Youtube](https://www.youtube.com/watch?v=kAf7GuBpOAU)).
+[![Screen Recording of Chat with OpenTargets CLI](resources/chatwithopentargets.gif)](https://www.youtube.com/watch?v=kAf7GuBpOAU "Screen Recording of Chat with OpenTargets CLI")
 
 
 
@@ -28,11 +33,12 @@ Make sure you have [conda](https://docs.conda.io/projects/conda/en/latest/user-g
 
     - Creates a new conda environment named `chatwithopentargets` with Python 3.11.
     - Activates the new conda environment.
-    - Installs the required Python packages as specified in the `setup.py` file. This includes the `click` and `openai` packages, and makes the `opentargets` CLI tool available.
+    - Installs the required Python packages as specified in the `setup.py` file. This includes the `click`, `openai`, `flask`, and `flask_cors` packages.
     - Creates directories for log files: `logs/suggestions`, `logs/results`, and `logs/interpretations`.
 
 ## Usage
 
+### CLI Usage
 After the setup, you can use the `opentargets` CLI tool, which provides the following commands:
 
 - `suggest`: Generates a suggested query for the provided question.
@@ -51,40 +57,34 @@ opentargets delete-logs
 
 Replace `"Your question here"` with your actual question, enclosed in quotes.
 
-## Representative example:
+### Web Usage
+
+The web interface can be started using Flask. From the terminal, you can run the command `python chat_serve.py`. This will start the Flask server, which by default will be accessible at `localhost:5001`.
+
+Two endpoints are available:
+
+- `/chat`: This accepts a POST request with a JSON body containing the key `message`. The value of `message` should be the query you want to ask the OpenTargets database. The response will be a JSON object containing the key `response` with the interpreted query result as its value.
+
+- `/delete_logs`: This accepts a POST request and deletes all log files in the `logs/suggestions`, `logs/results`, and `logs/interpretations` directories. The response will be a JSON object containing the key `response` with the value "Deleted all log files".
+
+#### Example of usage with cURL:
 
 ```bash
-(chatwithopentargets) chatGPT-for-genetics % opentargets interpret
-Please enter a question: Top 5 targets for prostate cancer
-Querying the Open Targets API...
-The query result provides information about the top 5 targets associated with prostate cancer. Each target is represented by its unique identifier (id), approved symbol, and approved name. The targets are ranked based on their scores, which indicate their relevance or significance in relation to prostate cancer.
+# For chatting
+curl -X POST -H "Content-Type: application/json" -d '{"message":"Top 5 targets for prostate cancer"}' http://localhost:5001/chat
 
-The top 5 targets for prostate cancer, according to the query result, are as follows:
-
-1. Target: ENSG00000169083
-   Approved Symbol: AR
-   Approved Name: Androgen Receptor
-   Score: 0.8563968907935317
-
-2. Target: ENSG00000171862
-   Approved Symbol: PTEN
-   Approved Name: Phosphatase and Tensin Homolog
-   Score: 0.8294982223790262
-
-3. Target: ENSG00000139618
-   Approved Symbol: BRCA2
-   Approved Name: BRCA2 DNA Repair Associated
-   Score: 0.8137493155511473
-
-4. Target: ENSG00000183765
-   Approved Symbol: CHEK2
-   Approved Name: Checkpoint Kinase 2
-   Score: 0.81080286658196
-
-5. Target: ENSG00000141510
-   Approved Symbol: TP53
-   Approved Name: Tumor Protein p53
-   Score: 0.7684696851450488
-
-These targets have been identified as having high relevance or involvement in prostate cancer based on their scores. Researchers and medical professionals can further investigate these targets to understand their role in the development, progression, and treatment of prostate cancer.
+# For deleting logs
+curl -X POST http://localhost:5001/delete_logs
 ```
+
+### Running the Web Interface Locally
+
+To run the web interface locally, you'll need to have Node.js and npm installed. Then:
+
+1. Navigate to the project directory in your terminal.
+2. Run `npm install` to install the necessary packages for the web interface.
+3. Run `npm run serve` to start the Vue.js development server. The web interface will be accessible at `localhost:8080`.
+
+Now, you can interact with the web interface through your web browser. The requests from the web interface will be sent to the Flask server running at `localhost:5001`.
+
+Remember to always run the Flask server (`python chat_serve.py`) before starting the Vue.js development server (`npm run serve`).
