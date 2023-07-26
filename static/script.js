@@ -9,7 +9,7 @@ document.querySelector("#start-chat-form").addEventListener("submit", function(e
         userMessage.className = "message user-message";
         userMessage.textContent = userInput;
         document.querySelector("#chat-container").appendChild(userMessage);
-        fetch('http://127.0.0.1:5001/chat', {
+        fetch('/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
