@@ -14,10 +14,6 @@ export default function Chat() {
     const [messages, setMessages] = useState([]);
     const containerClass = chatStarted ? styles.container : `${styles.container} ${styles.center}`;
 
-    useEffect(() => {
-        console.log("Backend URL: ", process.env.NEXT_PUBLIC_BACKEND_URL);
-    }, []);
-
     const handleSendMessage = async (event) => {
         event.preventDefault();
         if (message.trim() !== '') {
