@@ -1,0 +1,13 @@
+.container.center {
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
