@@ -1,0 +1,9 @@
+# Dockerfile.client
+FROM node:20
+WORKDIR /app
+COPY /app/package.json ./
+RUN npm install -legacy-peer-deps
+COPY ./app ./
+RUN npm run build --verbose
+EXPOSE 3000
+CMD ["npm", "start"]

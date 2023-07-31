@@ -1,0 +1,30 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+      {
+        "name": "nextjs-app",
+        "image": "foadgreen/nextjs-app:latest",
+        "essential": true,
+        "memory": 128,
+        "portMappings": [
+          {
+            "hostPort": 80,
+            "containerPort": 3000
+          }
+        ]
+      },
+      {
+        "name": "flask-app",
+        "image": "foadgreen/flask-app:latest",
+        "essential": true,
+        "memory": 128,
+        "portMappings": [
+          {
+            "hostPort": 5001,
+            "containerPort": 5001
+          }
+        ]
+      }
+    ]
+  }
+  
