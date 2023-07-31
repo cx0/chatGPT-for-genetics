@@ -5,8 +5,7 @@ from pathlib import Path
 import json
 import os
 
-app = Flask(__name__, static_folder='static', static_url_path='')
-# app = Flask(__name__)
+app = Flask(__name__)
 CORS(app)
 
 
@@ -32,10 +31,6 @@ def delete_logs():
         for file in files:
             file.unlink()
     return jsonify({'response': "Deleted all log files"})
-
-@app.route('/', methods=['GET'])
-def root():
-    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
