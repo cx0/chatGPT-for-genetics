@@ -1,21 +1,32 @@
+// Chat.js
 import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import fetch from 'isomorphic-unfetch';
 import MessageList from './MessageList';
 import SendMessageButton from './SendMessageButton';
-import MessageAutoComplete from './MessageAutoComplete';
+import MessageInput from './MessageInput';
+import styles from '../styles/ChatInput.module.css';
 
-export default function ChatInput() {
+export default function Chat() {
     const [message, setMessage] = useState('');
     const [chatStarted, setChatStarted] = useState(false);
+    const [instructionOpen, setInstructionOpen] = useState(true);
     const [messages, setMessages] = useState([]);
+    const containerClass = chatStarted ? styles.container : `${styles.container} ${styles.center}`;
+
+    useEffect(() => {
+        console.log("Backend URL: ", process.env.NEXT_PUBLIC_BACKEND_URL);
+    }, []);
 
     const handleSendMessage = async (event) => {
         event.preventDefault();
         if (message.trim() !== '') {
+            setInstructionOpen(false);
             try {
                 setMessages([...messages, { text: message, isUser: true }]);
-                const res = await fetch('http://localhost:5001/chat', {
+                const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+                const chatEndpoint = `${backendUrl}/chat`;
+                const res = await fetch(chatEndpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -33,18 +44,19 @@ export default function ChatInput() {
         }
     };
 
+    const handleOpen = () => {
+        setInstructionOpen(true);
+    };
+
+    const handleClose = () => {
+        setInstructionOpen(false);
+    };
+
     return (
-        <div className="container">
-            <MessageList messages={messages} />
+        <div className={containerClass}>
             <form onSubmit={handleSendMessage}>
-                <Grid container spacing={1} alignItems="flex-end">
-                    <Grid item xs={10}>
-                        <MessageAutoComplete setMessage={setMessage} />
-                    </Grid>
-                    <Grid item xs={2}>
-                        <SendMessageButton />
-                    </Grid>
-                </Grid>
+                <MessageInput setMessage={setMessage} instructionOpen={instructionOpen} handleOpen={handleOpen} handleClose={handleClose} />
+                <MessageList messages={messages} />
             </form>
         </div>
     );

@@ -4,9 +4,12 @@ import Message from './Message';
 
 export default function MessageList({ messages }) {
   return (
-    <Grid container direction="column" justify="flex-end" alignItems="stretch" spacing={2}>
+    <Grid container 
+      direction="column" 
+      justifyContent="flex-end" 
+    >
       {messages.map((message, index) => (
-        <Grid item key={index}>
+        <Grid item key={index} container justifyContent={message.isUser ? 'flex-end' : 'flex-start'}>
           <Message message={message} />
         </Grid>
       ))}

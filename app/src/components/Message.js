@@ -9,19 +9,25 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#0b81ff',
     color: '#fff',
     borderRadius: '10px 0px 10px 10px',
-    maxWidth: '80%',
+    maxWidth: '90%',
     margin: '10px',
-    padding: '10px',
+    padding: '20px',
+    wordBreak: 'break-word',
+    textAlign: 'right',
   },
   botMessage: {
     alignSelf: 'flex-start',
     backgroundColor: '#f3f3f3',
     borderRadius: '0px 10px 10px 10px',
-    maxWidth: '80%',
+    maxWidth: '90%',
     margin: '10px',
-    padding: '10px',
+    padding: '20px',
+    wordBreak: 'break-word',
+    whiteSpace: 'pre-wrap',
+    textAlign: 'left',
   },
 }));
+
 
 export default function Message({ message }) {
   const classes = useStyles();
@@ -29,7 +35,7 @@ export default function Message({ message }) {
   return (
     <Paper className={message.isUser ? classes.userMessage : classes.botMessage}>
       <Typography variant="body1">
-        <pre> {message.text} </pre>
+        {message.text}
       </Typography>
     </Paper>
   );

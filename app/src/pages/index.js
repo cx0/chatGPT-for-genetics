@@ -1,10 +1,11 @@
 import React from 'react';
-import ChatInput from '../components/ChatInput';
+import Chat from '../components/Chat';
+
 
 export default function Home() {
     return (
         <div>
-            <ChatInput />
+            <Chat />
         </div>
     );
 }

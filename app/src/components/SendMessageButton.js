@@ -1,11 +1,11 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import SendIcon from '@material-ui/icons/Send';
+import IconButton from '@mui/material/IconButton';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export default function SendMessageButton() {
     return (
-        <IconButton color="primary" type="submit">
-            <SendIcon />
+        <IconButton color="primary" type="submit" variant="contained">
+            <ArrowUpwardIcon />
         </IconButton>
     );
 }
