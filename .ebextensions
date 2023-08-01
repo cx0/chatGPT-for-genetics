@@ -1,0 +1,9 @@
+option_settings:
+  aws:elasticbeanstalk:container:python:staticfiles:
+    /static: app/static
+  aws:elasticbeanstalk:environment:proxy:staticfiles:
+    /static: app/static
+  aws:elasticbeanstalk:application:environment:
+    PORT: 3000
+  aws:elasticbeanstalk:environment:proxy:
+    ProxyServer: nginx
