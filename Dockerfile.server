@@ -4,6 +4,4 @@ WORKDIR /
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 COPY . ./
-ARG OPENAI_API_KEY
-ENV OPENAI_API_KEY=$OPENAI_API_KEY
 CMD ["python", "application.py"]
