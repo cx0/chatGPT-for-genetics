@@ -1,18 +1,14 @@
-// Chat.js
 import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import fetch from 'isomorphic-unfetch';
 import MessageList from './MessageList';
-import SendMessageButton from './SendMessageButton';
 import MessageInput from './MessageInput';
-import styles from '../styles/ChatInput.module.css';
 
 export default function Chat() {
     const [message, setMessage] = useState('');
     const [chatStarted, setChatStarted] = useState(false);
     const [instructionOpen, setInstructionOpen] = useState(true);
     const [messages, setMessages] = useState([]);
-    const containerClass = chatStarted ? styles.container : `${styles.container} ${styles.center}`;
 
     const handleSendMessage = async (event) => {
         event.preventDefault();
@@ -49,11 +45,19 @@ export default function Chat() {
     };
 
     return (
-        <div className={containerClass}>
+        <Grid
+            container
+            direction="column"
+            style={{
+                maxWidth: 800,
+                margin: "auto",
+                height: "100vh",
+            }}
+        >
             <form onSubmit={handleSendMessage}>
                 <MessageInput setMessage={setMessage} instructionOpen={instructionOpen} handleOpen={handleOpen} handleClose={handleClose} />
                 <MessageList messages={messages} />
             </form>
-        </div>
+        </Grid>
     );
 }

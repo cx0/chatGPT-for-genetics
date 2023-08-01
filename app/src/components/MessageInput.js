@@ -18,9 +18,9 @@ export default function MessageInput({ setMessage, instructionOpen, handleOpen, 
                 zIndex: 1,
                 padding: 10,
                 borderRadius: 10,
-                background: 'rgba(255, 255, 255, 0.5)', // Semi-transparent background
-                backdropFilter: 'blur(10px)', // Apply blur to the backdrop
-                WebkitBackdropFilter: 'blur(10px)',
+                background: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(5px)',
+                WebkitBackdropFilter: 'blur(5px)',
             }}
         >
             <Grid item xs={8}>

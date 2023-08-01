@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 export default function MessageAutoComplete({ setMessage }) {
     const exampleQuestions = [
         "Which diseases are associated with the gene CAV1?", 
-        "Find the top 5 diseases associated with the drug pembrolizumab?", 
+        "Find the top 5 targets associated with the drug pembrolizumab?", 
         "Show scores for the top two targets associated with Idiopathic Pulmonary Fibrosis?", 
         "What information do you have on insulin?"
     ];
