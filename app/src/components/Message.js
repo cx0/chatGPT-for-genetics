@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#0b81ff',
     color: '#fff',
     borderRadius: '10px 0px 10px 10px',
-    maxWidth: '90%',
+    maxWidth: '80%',
     margin: '10px',
     padding: '20px',
     wordBreak: 'break-word',

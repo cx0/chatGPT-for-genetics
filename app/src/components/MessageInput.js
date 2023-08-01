@@ -14,7 +14,7 @@ export default function MessageInput({ setMessage, instructionOpen, handleOpen, 
             alignItems="center" 
             style={{
                 position: 'sticky', 
-                top: 10, 
+                top: 30, 
                 zIndex: 1,
                 padding: 10,
                 borderRadius: 10,
