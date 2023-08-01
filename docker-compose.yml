@@ -15,5 +15,3 @@ services:
       dockerfile: Dockerfile.server
     ports:
       - 5001:5001
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
