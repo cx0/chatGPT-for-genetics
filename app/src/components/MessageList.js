@@ -7,7 +7,7 @@ export default function MessageList({ messages }) {
     <Grid container 
       direction="column" 
       justifyContent="flex-end"
-      style={{ marginTop: '20px' }} 
+      style={{ marginTop: '50px' }} 
     >
       {messages.map((message, index) => (
         <Grid item key={index} container justifyContent={message.isUser ? 'flex-end' : 'flex-start'}>
