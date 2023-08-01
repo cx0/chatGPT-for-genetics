@@ -15,6 +15,12 @@
 # production
 /build
 
+# vscode
+.vscode/
+
+# EBS
+.elasticbeanstalk/
+
 # misc
 .DS_Store
 *.pem
