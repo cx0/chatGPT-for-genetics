@@ -7,4 +7,4 @@ COPY ./app ./
 RUN npm run build --verbose
 EXPOSE 3000
 ENV NEXT_PUBLIC_BACKEND_URL=http://flask:5001
-CMD ["npm", "start"]
+CMD ["npm", "start", "-H", "0.0.0.0"]
