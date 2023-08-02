@@ -41,19 +41,20 @@ class Chat:
     
     def complete(self, user_input: str) -> str:
         suggestion = self.suggest(user_input)
+        print(suggestion)
         query_result = OpenTargetHandler().query(suggestion)
         self.save_to_disk(query_result, 'results')
-        return query_result
+        return suggestion, query_result
     
     def generate_query_interpretation(self, user_input: str, query_result: str) -> List[Dict]:
         return [
             { "role": "user", "content": f"Consider the following query result from OpenTargets API: {query_result}" },
-            { "role": "user", "content": f"Now interpret the query result as it relates to the following question: {user_input}" },
+            { "role": "user", "content": f"Succintly interpret the query result as it relates to the following question: {user_input}" },
+            { "role": "user", "content": f"If the query result contains a list of entities, then generate only tabluar output with no other text included." }
         ]
     
     def interpret(self, user_input: str) -> str:
-        suggestion = self.complete(user_input=user_input)
-        interpretation = ChatCompleter().response(messages=self.generate_query_interpretation(user_input, suggestion))
-        print(interpretation)
-        self.save_to_disk(interpretation, 'interpretations')
-        return interpretation
+        suggestion, query_result = self.complete(user_input=user_input)
+        response = ChatCompleter().response(messages=self.generate_query_interpretation(user_input, query_result))
+        self.save_to_disk(response, 'interpretations')
+        return suggestion, response
