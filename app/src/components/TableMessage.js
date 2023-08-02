@@ -6,7 +6,7 @@ export default function TableMessage({ tableString }) {
 
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="a dense table" size="small">
+            <Table max-width={300} aria-label="a dense table" size="small">
                 <TableBody>
                     {rows.map((row, rowIndex) => (
                         <TableRow key={rowIndex}>

@@ -7,21 +7,21 @@ import CodeBlock from './CodeBlock';
 
 const useStyles = makeStyles({
   userMessage: {
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     backgroundColor: '#0b81ff',
     color: '#fff',
     borderRadius: '10px 10px 10px 10px',
-    maxWidth: '80%',
+    maxWidth: '100%',
     margin: '5px',
     padding: '10px',
     wordBreak: 'break-word',
-    textAlign: 'right',
+    textAlign: 'left',
   },
   botMessage: {
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     backgroundColor: '#f3f3f3',
     borderRadius: '10px 10px 10px 10px',
-    maxWidth: '90%',
+    maxWidth: '900%',
     margin: '5px',
     padding: '10px',
     wordBreak: 'break-word',

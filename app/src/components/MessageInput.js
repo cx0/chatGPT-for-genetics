@@ -32,6 +32,7 @@ export default function MessageInput({ setMessage, instructionOpen, handleOpen, 
                 justifyContent="center" 
                 alignItems="center"
             >
+                <Grid>
                 <Tooltip title="Reset chat">
                 <Grid item xs={"auto"}>
                     <IconButton color="primary" onClick={handleResetChat}>
@@ -39,15 +40,17 @@ export default function MessageInput({ setMessage, instructionOpen, handleOpen, 
                     </IconButton>
                 </Grid>
                 </Tooltip>
+                <Grid item xs={"auto"}>
+                    <ChatInstructions open={instructionOpen} handleOpen={handleOpen} handleClose={handleClose}/>
+                </Grid>
+                </Grid>
                 <Grid item xs={8}>
                     <MessageAutoComplete setMessage={setMessage}/>
                 </Grid>
                 <Grid item xs={"auto"}>
                     <SendMessageButton />
                 </Grid>
-                <Grid item xs={"auto"}>
-                    <ChatInstructions open={instructionOpen} handleOpen={handleOpen} handleClose={handleClose}/>
-                </Grid>
+                
             </Grid>
             {
                 isLoading && 

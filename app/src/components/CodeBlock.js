@@ -17,7 +17,7 @@ export default function CodeBlock(props) {
 
   return (
     <div>
-        <Grid container alignItems="center">
+        <Grid container direction="row" alignItems="center" spacing={{xs: 0}}>
             <Grid item>
                 <Tooltip title="Copy to clipboard">
                 <IconButton color="primary" size="small" onClick={handleCopyCode}>
@@ -32,7 +32,7 @@ export default function CodeBlock(props) {
                 </Link></p>
             </Grid>
         </Grid>
-        <Grid>
+        <Grid maxWidth={400}>
             <SyntaxHighlighter 
                 language="graphql" 
                 style={oneDark}>
