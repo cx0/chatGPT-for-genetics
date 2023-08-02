@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 import fetch from 'isomorphic-unfetch';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
@@ -9,10 +10,16 @@ export default function Chat() {
     const [chatStarted, setChatStarted] = useState(false);
     const [instructionOpen, setInstructionOpen] = useState(true);
     const [messages, setMessages] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const handleResetChat = () => {
+        setMessages([]);
+        setChatStarted(false);
+    };
 
     const handleSendMessage = async (event) => {
         event.preventDefault();
         if (message.trim() !== '') {
+            setIsLoading(true);
             setInstructionOpen(false);
             try {
                 setMessages([...messages, { text: message, isUser: true }]);
@@ -26,9 +33,14 @@ export default function Chat() {
                     body: JSON.stringify({ message: message })
                 });
                 const data = await res.json();
-                setMessages((prevMessages) => [...prevMessages, { text: data.response, isUser: false }]);
+                setMessages((prevMessages) => [
+                    ...prevMessages, 
+                    { text: data.suggestion, isUser: false, isSuggestion: true},
+                    { text: data.response, isUser: false },
+                ]);
                 setMessage('');
                 setChatStarted(true);
+                setIsLoading(false);
             } catch (error) {
                 console.error("Error sending message: ", error);
                 setMessages((prevMessages) => [...prevMessages, { text: "Error sending message. Please try again later.", isUser: false }]);
@@ -55,7 +67,14 @@ export default function Chat() {
             }}
         >
             <form onSubmit={handleSendMessage}>
-                <MessageInput setMessage={setMessage} instructionOpen={instructionOpen} handleOpen={handleOpen} handleClose={handleClose} />
+                <MessageInput 
+                    setMessage={setMessage} 
+                    instructionOpen={instructionOpen} 
+                    handleOpen={handleOpen} 
+                    handleClose={handleClose} 
+                    isLoading={isLoading}
+                    handleResetChat={handleResetChat}
+                />
                 <MessageList messages={messages} />
             </form>
         </Grid>

@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 export default function MessageAutoComplete({ setMessage }) {
     const exampleQuestions = [
         "Which diseases are associated with the gene CHEK2?",
-        "Which clinical symptoms are associated with diabetes?",
+        "Which are the 10 most relevant clinical symptoms associated with diabetes?",
         "Show scores for the top two targets associated with Idiopathic Pulmonary Fibrosis?", 
         "What information do you have on insulin?"
     ];
@@ -26,6 +26,8 @@ export default function MessageAutoComplete({ setMessage }) {
                 />
             )}
             clearOnEscape
+            includeInputInList
+            autoComplete
         />
     );
 }

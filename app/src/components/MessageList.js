@@ -1,8 +1,16 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import React, { useEffect, useRef } from 'react';
+import Grid from '@mui/material/Grid';
 import Message from './Message';
 
 export default function MessageList({ messages }) {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(scrollToBottom, [messages]);
+
   return (
     <Grid container 
       direction="column" 
@@ -14,6 +22,7 @@ export default function MessageList({ messages }) {
           <Message message={message} />
         </Grid>
       ))}
+      <div ref={messagesEndRef} />
     </Grid>
   );
 }
