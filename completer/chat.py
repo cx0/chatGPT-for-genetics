@@ -36,14 +36,13 @@ class Chat:
 
     def suggest(self, user_input: str) -> str:
         suggestion = ChatCompleter().response(messages=self.generate_suggestion_messages(user_input))
-        self.save_to_disk(suggestion, 'suggestions')
+        # self.save_to_disk(suggestion, 'suggestions')
         return suggestion
     
     def complete(self, user_input: str) -> str:
         suggestion = self.suggest(user_input)
-        print(suggestion)
         query_result = OpenTargetHandler().query(suggestion)
-        self.save_to_disk(query_result, 'results')
+        # self.save_to_disk(query_result, 'results')
         return suggestion, query_result
     
     def generate_query_interpretation(self, user_input: str, query_result: str) -> List[Dict]:
@@ -56,5 +55,5 @@ class Chat:
     def interpret(self, user_input: str) -> str:
         suggestion, query_result = self.complete(user_input=user_input)
         response = ChatCompleter().response(messages=self.generate_query_interpretation(user_input, query_result))
-        self.save_to_disk(response, 'interpretations')
+        # self.save_to_disk(response, 'interpretations')
         return suggestion, response
