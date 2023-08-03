@@ -25,6 +25,7 @@ export default function MessageInput({ setMessage, instructionOpen, handleOpen, 
                 background: 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(5px)',
                 WebkitBackdropFilter: 'blur(5px)',
+                width: '100%'
             }}
         >
             
