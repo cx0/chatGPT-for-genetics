@@ -11,9 +11,15 @@ import Tooltip from '@mui/material/Tooltip';
 SyntaxHighlighter.registerLanguage('graphql', graphql);
 
 export default function CodeBlock(props) {
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(props.code);
-  };
+    const handleCopyCode = async () => {
+        try {
+            await navigator.clipboard.writeText(props.code);
+            console.log('Copying to clipboard was successful!');
+        } catch (err) {
+            console.error('Could not copy text: ', err);
+        }
+    };
+    
 
   return (
     <div>
