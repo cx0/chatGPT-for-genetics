@@ -52,7 +52,6 @@ export default function MessageInput({ setMessage, instructionOpen, handleOpen, 
                         <SendMessageButton />
                     </Grid>
                 </Grid>
-                
             </Grid>
             {
                 isLoading && 

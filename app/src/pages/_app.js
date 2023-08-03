@@ -1,7 +1,7 @@
 // _app.js
 import React from 'react';
 import '../styles/global.css';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 
 ReactGA.initialize('G-GRYK5L4WC3');
 
