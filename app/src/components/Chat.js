@@ -61,9 +61,10 @@ export default function Chat() {
             container
             direction="column"
             style={{
-                maxWidth: 800,
+                maxWidth: '100%',
                 margin: "auto",
                 height: "100vh",
+                padding: '0 1rem',
             }}
         >
             <form onSubmit={handleSendMessage}>

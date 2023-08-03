@@ -1,6 +1,6 @@
 // MessageInput.js
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 import ReplayIcon from '@mui/icons-material/Replay';
 import IconButton from '@mui/material/IconButton';
@@ -13,12 +13,14 @@ export default function MessageInput({ setMessage, instructionOpen, handleOpen, 
     return (
         <Grid 
             container 
-            direction="column" 
+            direction="column"
+            justifyContent="center"
             style={{
                 position: 'sticky', 
                 top: 30, 
                 zIndex: 1,
                 padding: 10,
+                minHeight: 100,
                 borderRadius: 10,
                 background: 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(5px)',
@@ -32,23 +34,23 @@ export default function MessageInput({ setMessage, instructionOpen, handleOpen, 
                 justifyContent="center" 
                 alignItems="center"
             >
-                <Grid>
-                <Tooltip title="Reset chat">
-                <Grid item xs={"auto"}>
-                    <IconButton color="primary" onClick={handleResetChat}>
-                        <ReplayIcon />
-                    </IconButton>
-                </Grid>
-                </Tooltip>
-                <Grid item xs={"auto"}>
-                    <ChatInstructions open={instructionOpen} handleOpen={handleOpen} handleClose={handleClose}/>
-                </Grid>
-                </Grid>
-                <Grid item xs={8}>
-                    <MessageAutoComplete setMessage={setMessage}/>
-                </Grid>
-                <Grid item xs={"auto"}>
-                    <SendMessageButton />
+                <Grid container direction="row" justifyContent="space-between" alignItems="center">
+                    <Grid item>
+                        <Tooltip title="Reset chat">
+                            <IconButton color="primary" onClick={handleResetChat}>
+                                <ReplayIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Grid>
+                    <Grid item>
+                        <ChatInstructions open={instructionOpen} handleOpen={handleOpen} handleClose={handleClose}/>
+                    </Grid>
+                    <Grid item xs={6} sm={8}>
+                        <MessageAutoComplete setMessage={setMessage}/>
+                    </Grid>
+                    <Grid item>
+                        <SendMessageButton />
+                    </Grid>
                 </Grid>
                 
             </Grid>

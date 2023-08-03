@@ -18,21 +18,23 @@ export default function CodeBlock(props) {
   return (
     <div>
         <Grid container direction="row" alignItems="center" spacing={{xs: 0}}>
-            <Grid item>
-                <Tooltip title="Copy to clipboard">
-                <IconButton color="primary" size="small" onClick={handleCopyCode}>
-                    <FileCopyIcon fontSize="inherit" />
-                </IconButton>
-                </Tooltip>
-            </Grid>
-            <Grid item>
-                <p style={{margin: 0, marginLeft: 10}}>Explore more on the 
-                <Link href='https://api.platform.opentargets.org/api/v4/graphql/browser' style={{marginLeft: 5}}>
-                    OpenTargets API Playground
-                </Link></p>
+            <Grid container direction="row" alignItems="center">
+                <Grid item>
+                    <Tooltip title="Copy to clipboard">
+                    <IconButton color="primary" size="small" onClick={handleCopyCode}>
+                        <FileCopyIcon fontSize="inherit" />
+                    </IconButton>
+                    </Tooltip>
+                </Grid>
+                <Grid item>
+                    <p style={{margin: 0, marginLeft: 5}}>
+                        Try on the <Link href='https://api.platform.opentargets.org/api/v4/graphql/browser'>
+                        OpenTargets API Playground</Link>
+                    </p>
+                </Grid>
             </Grid>
         </Grid>
-        <Grid maxWidth={400}>
+        <Grid style={{maxWidth: '100%'}}>
             <SyntaxHighlighter 
                 language="graphql" 
                 style={oneDark}>

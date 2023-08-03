@@ -1,12 +1,12 @@
-// TableComponent.js
+// TableMessage.js
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 
 export default function TableMessage({ tableString }) {
     const rows = tableString.split('\n').filter(row => !row.includes('---')).map(row => row.split('|'));
 
     return (
-        <TableContainer component={Paper}>
-            <Table max-width={300} aria-label="a dense table" size="small">
+        <TableContainer style={{maxWidth: '100%'}} component={Paper}>
+            <Table aria-label="a dense table" padding='0 1rem'>
                 <TableBody>
                     {rows.map((row, rowIndex) => (
                         <TableRow key={rowIndex}>
