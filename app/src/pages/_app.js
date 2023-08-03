@@ -8,7 +8,7 @@ ReactGA.initialize('G-GRYK5L4WC3');
 function MyApp({ Component, pageProps }) {
     React.useEffect(() => {
         if (process.env.NODE_ENV === 'production') {
-            ReactGA.pageview(window.location.pathname + window.location.search);
+            ReactGA.send("pageview");
         }
     }, []);
     return <Component {...pageProps} />;
