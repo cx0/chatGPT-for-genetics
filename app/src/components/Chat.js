@@ -61,7 +61,6 @@ export default function Chat() {
             container
             direction="column"
             style={{
-                maxWidth: '100%',
                 margin: "auto",
                 height: "100vh",
                 padding: '0 1rem',

@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import TableMessage from './TableMessage';
 import CodeBlock from './CodeBlock';
+import Grid from '@mui/material/Grid';
 
 const useStyles = makeStyles({
   userMessage: {
@@ -11,17 +12,15 @@ const useStyles = makeStyles({
     backgroundColor: '#0b81ff',
     color: '#fff',
     borderRadius: '10px 10px 10px 10px',
-    maxWidth: '80%',
     margin: '5px',
     padding: '10px',
     wordBreak: 'break-word',
-    textAlign: 'left',
+    textAlign: 'right',
   },
   botMessage: {
     alignSelf: 'center',
     backgroundColor: '#f3f3f3',
     borderRadius: '10px 10px 10px 10px',
-    maxWidth: '80%',
     margin: '5px',
     padding: '10px',
     wordBreak: 'break-word',
@@ -45,19 +44,23 @@ export default function Message({ message }) {
   }
 
   return (
-    <Paper className={message.isUser ? classes.userMessage : classes.botMessage}>
-      {isTable ? (
-        <>
-          <Typography variant="body1">{precedingText}</Typography>
-          <TableMessage tableString={tableString} />
-        </>
-      ) : isCode ? (
-        <CodeBlock code={message.text} />
-      ) : (
-        <Typography variant="body1">
-          {message.text}
-        </Typography>
-      )}
-    </Paper>
+    <Grid item xs={10} sm={8} md={6}>
+      <Paper className={message.isUser ? classes.userMessage : classes.botMessage}>
+        {isTable ? (
+          <>
+            <Typography variant="body2">{precedingText}</Typography>
+            <TableMessage tableString={tableString} />
+          </>
+        ) : isCode ? (
+          <Grid>
+          <CodeBlock code={message.text} />
+          </Grid>
+        ) : (
+          <Typography variant="body2">
+            {message.text}
+          </Typography>
+        )}
+      </Paper>
+    </Grid>
   );
 }

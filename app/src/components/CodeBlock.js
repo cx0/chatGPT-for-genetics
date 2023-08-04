@@ -7,6 +7,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 
 SyntaxHighlighter.registerLanguage('graphql', graphql);
 
@@ -19,6 +20,7 @@ export default function CodeBlock(props) {
             console.error('Could not copy text: ', err);
         }
     };
+      
     
 
   return (
@@ -33,20 +35,16 @@ export default function CodeBlock(props) {
                     </Tooltip>
                 </Grid>
                 <Grid item>
-                    <p style={{margin: 0, marginLeft: 5}}>
-                        Try on the <Link href='https://api.platform.opentargets.org/api/v4/graphql/browser'>
-                        OpenTargets API Playground</Link>
-                    </p>
+                    <Typography variant="body2" style={{margin: 0, marginLeft: 5}}>Try on the <Link href='https://api.platform.opentargets.org/api/v4/graphql/browser'>
+                        OpenTargets API Playground</Link></Typography>
                 </Grid>
             </Grid>
         </Grid>
-        <Grid style={{maxWidth: '100%'}}>
+        <Grid>
             <SyntaxHighlighter 
                 language="graphql" 
                 style={oneDark}>
                 {props.code}
-                borderRadius={30}
-                fontSize={10}
             </SyntaxHighlighter>
         </Grid>
     </div>
