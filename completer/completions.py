@@ -7,7 +7,7 @@ openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
 class ChatCompleter:
-    def __init__(self, model="gpt-3.5-turbo-16k-0613", max_tokens=500):
+    def __init__(self, model="gpt-3.5-turbo-16k-0613", max_tokens=1000):
         self.model = model
         self.max_tokens = max_tokens
         
@@ -17,7 +17,7 @@ class ChatCompleter:
             messages=messages,
             max_tokens=self.max_tokens,
             temperature=0,
-            top_p=1,
+            top_p=0.5,
             frequency_penalty=0,
             presence_penalty=0,
             stop=["###"]
