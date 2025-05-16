@@ -57,9 +57,15 @@ except requests.exceptions.HTTPError as err:
 
 # Transform API response from JSON into Python dictionary and print in console
 api_response = json.loads(response.text)
-hits_list = api_response["data"]["search"]["hits"][0]
+hits = api_response.get("data", {}).get("search", {}).get("hits", [])
 
 print("\n\nQuerying Open Targets genetics database...\n\n")
+
+if not hits:
+    print("No results found for your query.")
+    exit()
+
+hits_list = hits[0]
 
 disease_list = extract_values(hits_list, "disease")
 for i, j in enumerate(disease_list):
